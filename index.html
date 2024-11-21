@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Restaurant Menu</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gray-100 text-gray-800">
+
+    <!-- Header Section -->
+    <header class="bg-blue-500 text-white py-4">
+        <div class="container mx-auto text-center">
+            <h1 class="text-3xl font-bold">Welcome to [Your Restaurant Name]</h1>
+            <p class="text-lg">Delicious food, fast delivery, and student-friendly prices!</p>
+        </div>
+    </header>
+
+    <!-- Menu Section -->
+    <section class="container mx-auto mt-8 pb-4 px-4">
+        <h2 class="text-2xl font-semibold text-center mb-6">Our Menu</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 menu-container">
+            <!-- Menu Item (Repeat for Each Item Dynamically) -->
+            <div class="bg-white rounded-lg shadow-md overflow-hidden">
+                <img src="https://via.placeholder.com/300x200" alt="Dish Name" class="w-full h-48 object-cover">
+                <div class="p-4">
+                    <h3 class="text-lg font-semibold">Dish Name</h3>
+                    <p class="text-gray-600 text-sm mt-2">A short description of the dish to entice students.</p>
+                    <div class="mt-4 flex justify-between items-center" data-item-id="100">
+                        <span class="text-blue-500 font-bold text-2xl">₹100</span>
+                        <button
+                            class="add-to-cart bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition">
+                            Add to Cart
+                        </button>
+
+                        <div class="flex items-center hidden">
+                            <button
+                                class="bg-blue-500 text-white px-2 py-1 rounded hover:bg-blue-600 transition remove-from-cart">-</button>
+                            <span class="mx-2">0</span>
+                            <button
+                                class="bg-blue-500 text-white px-2 py-1 rounded hover:bg-blue-600 transition increment-quantity">+</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Repeat ends here -->
+        </div>
+    </section>
+
+    <!-- Cart Section -->
+    <section
+        class="sticky bottom-0 cart-section rounded-t-lg left-0 right-0 bg-gray-800 text-white p-4 flex flex-col items-center shadow-lg"
+        onclick="openCart()">
+        <div class="flex items-center justify-between w-full ">
+            <div>
+                <div>
+                    <span class="font-bold">Cart: </span>
+                    <span id="cart-count">0 Items</span>
+                </div>
+                <div>
+                    <span class="font-bold">Total: </span>
+                    <span id="total-cost">Rs. 0</span>
+                </div>
+            </div>
+            <button class="bg-green-500 px-4 py-2 rounded hover:bg-green-600 transition" onclick="checkout()">
+                Checkout
+            </button>
+        </div>
+        <!-- Cart Expanded Functionality -->
+        <div id="cart-expanded" class="hidden bg-gray-800 overflow-y-auto w-full">
+            <div class="flex justify-between items-center">
+                <h3 class="text-2xl font-semibold">Your Cart</h3>
+                <button class="bg-gray-600 text-white px-4 py-2 rounded hover:bg-gray-700 transition"
+                    onclick="closeCart()">
+                    Close
+                </button>
+            </div>
+            <ul id="cart-items" class="mt-4">
+                <li class="card-item flex justify-between py-4 border-b border-gray-600 ">
+                    <img src="https://via.placeholder.com/75x75" alt="">
+                    <div class="ml-4 w-full">
+                        <h4 class="text-lg font-semibold">Dish Name</h4>
+                        <span class="text-gray-400 font-bold text-lg">₹100</span>
+                    </div>
+                    <div class="flex justify-between flex-col items-center">
+                        <span class="text-blue-500 font-bold text-2xl">₹100</span>
+                        <div class="flex items-center">
+                            <button
+                                class="bg-blue-500 text-white px-2 py-1 rounded hover:bg-blue-600 transition remove-from-cart">-</button>
+                            <span class="mx-2">0</span>
+                            <button
+                                class="bg-blue-500 text-white px-2 py-1 rounded hover:bg-blue-600 transition increment-quantity">+</button>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <!--Write the expanded cart functionality here-->
+    </section>
+
+    <script>
+        let cartCount = 0;
+        let totalCost = 0;
+
+        const foodItems = [
+            {
+                id: 100,
+                name: "Dish Name",
+                description: "A short description of the dish to entice students.",
+                price: "₹100",
+                image: "https://via.placeholder.com/300x200",
+                cartImage: "https://via.placeholder.com/75x75"
+
+            },
+            {
+                id: 200,
+                name: "Potated Rice",
+                description: "A short description of the dish to entice students.",
+                price: "₹200",
+                image: "https://via.placeholder.com/300x200",
+                cartImage: "https://via.placeholder.com/75x75"
+            },
+            {
+                id: 300,
+                name: "Egg Rice",
+                description: "A short description of the dish to entice students.",
+                price: "₹300",
+                image: "https://via.placeholder.com/300x200",
+                cartImage: "https://via.placeholder.com/75x75"
+            }
+
+        ];
+
+        const menuContainer = document.querySelector(".menu-container");
+
+        foodItems.forEach(item => {
+            const menuItem = document.createElement("div");
+            menuItem.classList.add("bg-white", "rounded-lg", "shadow-md", "overflow-hidden");
+
+            const image = document.createElement("img");
+            image.src = item.image;
+            image.alt = item.name;
+            image.classList.add("w-full", "h-48", "object-cover");
+
+            const content = document.createElement("div");
+            content.classList.add("p-4");
+
+            const name = document.createElement("h3");
+            name.textContent = item.name;
+            name.classList.add("text-lg", "font-semibold");
+
+            const description = document.createElement("p");
+            description.textContent = item.description;
+            description.classList.add("text-gray-600", "text-sm", "mt-2");
+
+            const priceContainer = document.createElement("div");
+            priceContainer.classList.add("mt-4", "flex", "justify-between", "items-center");
+            priceContainer.setAttribute("data-item-id", item.id);
+
+            const price = document.createElement("span");
+            price.textContent = item.price;
+            price.classList.add("text-blue-500", "font-bold", "text-2xl");
+
+            const addButton = document.createElement("button");
+            addButton.classList.add("add-to-cart", "bg-blue-500", "text-white", "px-4", "py-2", "rounded", "hover:bg-blue-600", "transition", 'add-to-cart');
+            addButton.textContent = "Add to Cart";
+
+            const quantityContainer = document.createElement("div");
+            quantityContainer.classList.add("flex", "items-center", "hidden");
+
+            const decrementButton = document.createElement("button");
+            decrementButton.classList.add("bg-blue-500", "text-white", "px-2", "py-1", "rounded", "hover:bg-blue-600", "transition", "remove-from-cart");
+            decrementButton.textContent = "-";
+
+            const quantitySpan = document.createElement("span");
+            quantitySpan.textContent = "0";
+            quantitySpan.classList.add("mx-2");
+
+            const incrementButton = document.createElement("button");
+            incrementButton.classList.add("bg-blue-500", "text-white", "px-2", "py-1", "rounded", "hover:bg-blue-600", "transition", "increment-quantity");
+            incrementButton.textContent = "+";
+
+            priceContainer.appendChild(price);
+            priceContainer.appendChild(addButton);
+            priceContainer.appendChild(quantityContainer);
+            quantityContainer.appendChild(decrementButton);
+            quantityContainer.appendChild(quantitySpan);
+            quantityContainer.appendChild(incrementButton);
+
+            content.appendChild(name);
+            content.appendChild(description);
+            content.appendChild(priceContainer);
+
+            menuItem.appendChild(image);
+            menuItem.appendChild(content);
+
+            menuContainer.appendChild(menuItem);
+        });
+
+        const addToCartButtons = document.querySelectorAll(".add-to-cart");
+
+        addToCartButtons.forEach(button => {
+            button.addEventListener("click", () => {
+
+                const parentElement = button.parentElement;
+
+                const itemId = parentElement.getAttribute("data-item-id");
+
+                const hiddenDiv = button.nextElementSibling;
+
+                hiddenDiv.classList.remove("hidden");
+
+                button.classList.add("hidden");
+
+                const countSpan = hiddenDiv.querySelector("span");
+
+                const count = parseInt(countSpan.textContent) + 1;
+                countSpan.textContent = count;
+
+                addToCart(itemId);
+
+                if (count <= 0) {
+                    hiddenDiv.classList.add("hidden");
+                    button.classList.remove("hidden");
+                }
+            });
+        });
+
+        const removeFromCartButtons = document.querySelectorAll(".remove-from-cart");
+
+        removeFromCartButtons.forEach(button => {
+            button.addEventListener("click", () => {
+
+                const parentElement = button.parentElement.parentElement;
+                const countparentElement = button.parentElement;
+
+                const itemId = parentElement.getAttribute("data-item-id");
+
+                const countSpan = countparentElement.querySelector("span");
+
+                const count = parseInt(countSpan.textContent) - 1;
+                countSpan.textContent = count;
+
+                removefromcart(itemId);
+
+                if (count <= 0) {
+                    button.parentElement.classList.add("hidden");
+                    button.parentElement.previousElementSibling.classList.remove("hidden");
+                }
+            });
+        });
+
+        const incrementQuantityButtons = document.querySelectorAll(".increment-quantity");
+
+        incrementQuantityButtons.forEach(button => {
+            button.addEventListener("click", () => {
+
+                const parentElement = button.parentElement.parentElement;
+                const countparentElement = button.parentElement;
+
+                const itemId = parentElement.getAttribute("data-item-id");
+
+                const countSpan = countparentElement.querySelector("span");
+
+                const count = parseInt(countSpan.textContent) + 1;
+                countSpan.textContent = count;
+
+                addToCart(itemId);
+            });
+        });
+
+        function addToCart(itemId) {
+            totalCost += parseInt(itemId);
+            cartCount++;
+            document.getElementById("cart-count").textContent = `${cartCount} Item${cartCount > 1 ? 's' : ''}`;
+            document.getElementById("total-cost").textContent = `Rs. ${totalCost}`;
+            updateCart(itemId);
+        }
+
+        function removefromcart(itemId) {
+            totalCost -= parseInt(itemId);
+            cartCount--;
+            document.getElementById("cart-count").textContent = `${cartCount} Item${cartCount > 1 ? 's' : ''}`;
+            document.getElementById("total-cost").textContent = `Rs. ${totalCost}`;
+            updateCart(itemId);
+        }
+
+        function updateCart(itemId) {
+            const cartContainer = document.getElementById("cart-items");
+            const cart = JSON.parse(localStorage.getItem("cart")) || {};
+            const foodItem = foodItems.find(item => item.id === parseInt(itemId));
+            const quantity = cart[itemId] || 0; // get the quantity from the cart object
+
+            const existingItem = cartContainer.querySelector(`[data-item-id="${itemId}"]`);
+            if (existingItem) {
+                // update the quantity and price of the existing item
+                const priceSpan = existingItem.querySelector("span.text-blue-500");
+                const quantitySpan = existingItem.querySelector("span.mx-2");
+                const totalPrice = foodItem.price * quantity;
+                priceSpan.textContent = totalPrice.toFixed(2); // format the price with 2 decimal places
+                quantitySpan.textContent = quantity;
+            } else {
+                // add the new item to the cart
+                const cartHtml = `
+            <li class="card-item flex justify-between py-4 border-b border-gray-600" data-item-id="${foodItem && foodItem.id ? foodItem.id : ''}">
+                <img src="${foodItem && foodItem.cartImage ? foodItem.cartImage : ''}" alt="${foodItem && foodItem.name ? foodItem.name : ''}">                <div class="ml-4 w-full">
+                    <h4 class="text-lg font-semibold">${foodItem && foodItem.name ? foodItem.name : ''}</h4>
+                    <span class="text-gray-400 font-bold text-lg">${foodItem && foodItem.price ? foodItem.price : ''}</span>
+            
+                </div>
+                <div class="flex justify-between flex-col items-center">
+                        <span class="text-blue-500 font-bold text-2xl">${(foodItem && foodItem.price ? foodItem.price : 0) * parseInt(quantity)}</span>                    <div class="flex items-center">
+                        <button class="bg-blue-500 text-white px-2 py-1 rounded hover:bg-blue-600 transition remove-from-cart">-</button>
+                        <span class="mx-2">${quantity}</span>
+                        <button class="bg-blue-500 text-white px-2 py-1 rounded hover:bg-blue-600 transition increment-quantity">+</button>
+                    </div>
+                </div>
+            </li>
+        `;
+                cartContainer.innerHTML += cartHtml;
+            }
+        }
+
+
+
+        function checkout() {
+            alert("Proceeding to checkout...");
+        }
+        function openCart() {
+            document.getElementById("cart-expanded").classList.remove("hidden");
+            document.querySelector(".cart-section").classList.add("h-[80vh]");
+        }
+
+        function closeCart() {
+            console.log("close cart");
+            document.getElementById("cart-expanded").classList.add("hidden");
+        }
+
+    </script>
+</body>
+
+</html>
