@@ -6,52 +6,39 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Restaurant Menu</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .cart-section {
+            transition: height 1s ease-in-out, filter 0.3s ease-in-out;
+            overflow: hidden;
+        }
+    </style>
 </head>
 
-<body class="bg-gray-100 text-gray-800">
+<body class="text-gray-800 bg-gray-100">
 
-    <!-- Header Section -->
-    <header class="bg-blue-500 text-white py-4">
-        <div class="container mx-auto text-center">
-            <h1 class="text-3xl font-bold">Welcome to [Your Restaurant Name]</h1>
-            <p class="text-lg">Delicious food, fast delivery, and student-friendly prices!</p>
-        </div>
-    </header>
-
-    <!-- Menu Section -->
-    <section class="container mx-auto mt-8 pb-4 px-4">
-        <h2 class="text-2xl font-semibold text-center mb-6">Our Menu</h2>
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 menu-container">
-            <!-- Menu Item (Repeat for Each Item Dynamically) -->
-            <div class="bg-white rounded-lg shadow-md overflow-hidden">
-                <img src="https://via.placeholder.com/300x200" alt="Dish Name" class="w-full h-48 object-cover">
-                <div class="p-4">
-                    <h3 class="text-lg font-semibold">Dish Name</h3>
-                    <p class="text-gray-600 text-sm mt-2">A short description of the dish to entice students.</p>
-                    <div class="mt-4 flex justify-between items-center" data-item-id="100">
-                        <span class="text-blue-500 font-bold text-2xl">₹100</span>
-                        <button
-                            class="add-to-cart bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition">
-                            Add to Cart
-                        </button>
-
-                        <div class="flex items-center hidden">
-                            <button
-                                class="bg-blue-500 text-white px-2 py-1 rounded hover:bg-blue-600 transition remove-from-cart">-</button>
-                            <span class="mx-2">0</span>
-                            <button
-                                class="bg-blue-500 text-white px-2 py-1 rounded hover:bg-blue-600 transition increment-quantity">+</button>
-                        </div>
-                    </div>
-                </div>
+    <div class="menu" id="menu">
+        <!-- Header Section -->
+        <header class="py-4 text-white bg-blue-500">
+            <div class="container mx-auto text-center">
+                <h1 class="text-3xl font-bold">Welcome to [Your Restaurant Name]</h1>
+                <p class="text-lg">Delicious food, fast delivery, and student-friendly prices!</p>
             </div>
-            <!-- Repeat ends here -->
-        </div>
-    </section>
+        </header>
+
+        <!-- Menu Section -->
+        <section class="container px-4 pb-4 mx-auto mt-8">
+            <h2 class="mb-6 text-2xl font-semibold text-center">Our Menu</h2>
+            <div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 menu-container">
+                <!-- Menu Item (Repeat for Each Item Dynamically) -->
+
+                <!-- Repeat ends here -->
+            </div>
+        </section>
+    </div>
 
     <!-- Cart Section -->
     <section
-        class="sticky bottom-0 cart-section rounded-t-lg left-0 right-0 bg-gray-800 text-white p-4 flex flex-col items-center shadow-lg"
+        class="sticky bottom-0 left-0 right-0 flex flex-col-reverse items-center p-4 text-white bg-gray-800 rounded-t-lg shadow-lg cart-section"
         onclick="openCart()">
         <div class="flex items-center justify-between w-full ">
             <div>
@@ -64,37 +51,18 @@
                     <span id="total-cost">Rs. 0</span>
                 </div>
             </div>
-            <button class="bg-green-500 px-4 py-2 rounded hover:bg-green-600 transition" onclick="checkout()">
+            <button class="px-4 py-2 transition bg-green-500 rounded hover:bg-green-600" onclick="checkout()">
                 Checkout
             </button>
         </div>
         <!-- Cart Expanded Functionality -->
-        <div id="cart-expanded" class="hidden bg-gray-800 overflow-y-auto w-full">
+        <div id="cart-expanded" class="hidden w-full overflow-y-auto bg-gray-800 h-full">
             <div class="flex justify-between items-center">
-                <h3 class="text-2xl font-semibold">Your Cart</h3>
-                <button class="bg-gray-600 text-white px-4 py-2 rounded hover:bg-gray-700 transition"
-                    onclick="closeCart()">
-                    Close
-                </button>
+                <p class="text-lg">Cart</p>
+                <button class="px-4 py-2 transition bg-gray-600 rounded" id="closecartbtn" type="button">Close</button>
             </div>
-            <ul id="cart-items" class="mt-4">
-                <li class="card-item flex justify-between py-4 border-b border-gray-600 ">
-                    <img src="https://via.placeholder.com/75x75" alt="">
-                    <div class="ml-4 w-full">
-                        <h4 class="text-lg font-semibold">Dish Name</h4>
-                        <span class="text-gray-400 font-bold text-lg">₹100</span>
-                    </div>
-                    <div class="flex justify-between flex-col items-center">
-                        <span class="text-blue-500 font-bold text-2xl">₹100</span>
-                        <div class="flex items-center">
-                            <button
-                                class="bg-blue-500 text-white px-2 py-1 rounded hover:bg-blue-600 transition remove-from-cart">-</button>
-                            <span class="mx-2">0</span>
-                            <button
-                                class="bg-blue-500 text-white px-2 py-1 rounded hover:bg-blue-600 transition increment-quantity">+</button>
-                        </div>
-                    </div>
-                </li>
+            <ul id="cart-items" class="mt-4 ">
+                <!-- list items comes here -->
             </ul>
         </div>
         <!--Write the expanded cart functionality here-->
@@ -103,6 +71,7 @@
     <script>
         let cartCount = 0;
         let totalCost = 0;
+        let cartItems = [];
 
         const foodItems = [
             {
@@ -124,6 +93,22 @@
             },
             {
                 id: 300,
+                name: "Egg Rice",
+                description: "A short description of the dish to entice students.",
+                price: "₹300",
+                image: "https://via.placeholder.com/300x200",
+                cartImage: "https://via.placeholder.com/75x75"
+            },
+            {
+                id: 400,
+                name: "Egg Rice",
+                description: "A short description of the dish to entice students.",
+                price: "₹300",
+                image: "https://via.placeholder.com/300x200",
+                cartImage: "https://via.placeholder.com/75x75"
+            },
+            {
+                id: 500,
                 name: "Egg Rice",
                 description: "A short description of the dish to entice students.",
                 price: "₹300",
@@ -276,53 +261,126 @@
             cartCount++;
             document.getElementById("cart-count").textContent = `${cartCount} Item${cartCount > 1 ? 's' : ''}`;
             document.getElementById("total-cost").textContent = `Rs. ${totalCost}`;
+
+            let item = cartItems.find(cartItem => cartItem.id === itemId);
+            if (item) {
+                item.quantity += 1;
+            } else {
+                cartItems.push({ id: itemId, quantity: 1 });
+            }
             updateCart(itemId);
+            // cartItems.forEach(item => console.log(item));
         }
+
+
 
         function removefromcart(itemId) {
             totalCost -= parseInt(itemId);
             cartCount--;
             document.getElementById("cart-count").textContent = `${cartCount} Item${cartCount > 1 ? 's' : ''}`;
             document.getElementById("total-cost").textContent = `Rs. ${totalCost}`;
-            updateCart(itemId);
-        }
 
-        function updateCart(itemId) {
-            const cartContainer = document.getElementById("cart-items");
-            const cart = JSON.parse(localStorage.getItem("cart")) || {};
-            const foodItem = foodItems.find(item => item.id === parseInt(itemId));
-            const quantity = cart[itemId] || 0; // get the quantity from the cart object
-
-            const existingItem = cartContainer.querySelector(`[data-item-id="${itemId}"]`);
-            if (existingItem) {
-                // update the quantity and price of the existing item
-                const priceSpan = existingItem.querySelector("span.text-blue-500");
-                const quantitySpan = existingItem.querySelector("span.mx-2");
-                const totalPrice = foodItem.price * quantity;
-                priceSpan.textContent = totalPrice.toFixed(2); // format the price with 2 decimal places
-                quantitySpan.textContent = quantity;
-            } else {
-                // add the new item to the cart
-                const cartHtml = `
-            <li class="card-item flex justify-between py-4 border-b border-gray-600" data-item-id="${foodItem && foodItem.id ? foodItem.id : ''}">
-                <img src="${foodItem && foodItem.cartImage ? foodItem.cartImage : ''}" alt="${foodItem && foodItem.name ? foodItem.name : ''}">                <div class="ml-4 w-full">
-                    <h4 class="text-lg font-semibold">${foodItem && foodItem.name ? foodItem.name : ''}</h4>
-                    <span class="text-gray-400 font-bold text-lg">${foodItem && foodItem.price ? foodItem.price : ''}</span>
-            
-                </div>
-                <div class="flex justify-between flex-col items-center">
-                        <span class="text-blue-500 font-bold text-2xl">${(foodItem && foodItem.price ? foodItem.price : 0) * parseInt(quantity)}</span>                    <div class="flex items-center">
-                        <button class="bg-blue-500 text-white px-2 py-1 rounded hover:bg-blue-600 transition remove-from-cart">-</button>
-                        <span class="mx-2">${quantity}</span>
-                        <button class="bg-blue-500 text-white px-2 py-1 rounded hover:bg-blue-600 transition increment-quantity">+</button>
-                    </div>
-                </div>
-            </li>
-        `;
-                cartContainer.innerHTML += cartHtml;
+            let item = cartItems.find(cartItem => cartItem.id === itemId);
+            item.quantity -= 1;
+            if (item.quantity <= 0) {
+                cartItems = cartItems.filter(cartItem => cartItem.id !== itemId);
             }
+            updateCart(itemId);
+            // cartItems.forEach(item => console.log(item));
         }
 
+
+
+        function updateCart() {
+            const cartContainer = document.getElementById("cart-items");
+
+            if (!cartContainer) {
+                console.error("Cart container with id 'cart-items' not found.");
+                return;
+            }
+
+            let cartHtml = '';
+            let totalCost = 0;
+            let cartCount = 0;
+
+            cartItems.forEach(item => {
+                // Convert `item.id` to a number for comparison
+                let food = foodItems.find(food => food.id === Number(item.id));
+
+                if (!food) {
+                    console.warn(`Food item with id ${item.id} not found in foodItems.`);
+                    return; // Skip this cart item
+                }
+
+                // Calculate the total cost for this item
+                const itemCost = parseFloat(food.price.replace('₹', '')) * item.quantity;
+                totalCost += itemCost;
+                cartCount += item.quantity;
+
+                // Append to cartHtml
+                cartHtml += `
+      <li class="flex justify-between py-4 border-b border-gray-600 card-item" data-item-id="${food.id}">
+        <img src="${food.cartImage || food.image}" alt="${food.name}" class="object-cover w-16 h-16">
+        <div class="w-full ml-4">
+          <h4 class="text-lg font-semibold">${food.name}</h4>
+          <span class="text-lg font-bold text-gray-400">${food.price}</span>
+        </div>
+        <div class="flex flex-col items-end justify-between">
+          <span class="text-2xl font-bold text-blue-500">${itemCost}</span>
+          <div class="flex items-center">
+            <button class="px-2 py-1 text-white transition bg-blue-500 rounded hover:bg-blue-600 remove-from-cart">-</button>
+            <span class="mx-2">${item.quantity}</span>
+            <button class="px-2 py-1 text-white transition bg-blue-500 rounded hover:bg-blue-600 increment-quantity">+</button>
+          </div>
+        </div>
+      </li>
+    `;
+            });
+
+            // Update cart container HTML
+            cartContainer.innerHTML = cartHtml;
+
+            // Update total cost and cart count
+            document.getElementById("cart-count").textContent = `${cartCount} Item${cartCount > 1 ? 's' : ''}`;
+            document.getElementById("total-cost").textContent = `Rs. ${totalCost}`;
+
+            // Debugging log
+            console.log("Cart updated successfully:", cartHtml);
+        }
+
+        // Get the cart container element
+        const cartContainer = document.getElementById("cart-items");
+
+        // Add an event listener to the cart container
+        cartContainer.addEventListener("click", (event) => {
+            // Check if the clicked element is a remove-from-cart button
+            if (event.target.classList.contains("remove-from-cart")) {
+                // Get the item ID from the button's parent element
+                const itemId = event.target.closest(".card-item").getAttribute("data-item-id"); removefromcart(itemId);
+            }
+
+            // Check if the clicked element is an increment-quantity button
+            if (event.target.classList.contains("increment-quantity")) {
+                // Get the item ID from the button's parent element
+                const itemId = event.target.closest(".card-item").getAttribute("data-item-id"); console.log(itemId);
+                // Increment the quantity
+                const item = cartItems.find((item) => item.id === itemId);
+                item.quantity++;
+                updateCart();
+            }
+
+            // Check if the clicked element is a decrement-quantity button
+            if (event.target.classList.contains("decrement-quantity")) {
+                // Get the item ID from the button's parent element
+                const itemId = event.target.closest(".card-item").getAttribute("data-item-id");                // Decrement the quantity
+                const item = cartItems.find((item) => item.id === itemId);
+                item.quantity--;
+                if (item.quantity <= 0) {
+                    cartItems = cartItems.filter((item) => item.id !== itemId);
+                }
+                updateCart();
+            }
+        });
 
 
         function checkout() {
@@ -330,12 +388,25 @@
         }
         function openCart() {
             document.getElementById("cart-expanded").classList.remove("hidden");
-            document.querySelector(".cart-section").classList.add("h-[80vh]");
+            document.querySelector(".cart-section").style.height = "80vh";
+            document.getElementById('menu').style.filter = 'blur(10px)';
+            document.getElementById("cart-expanded").classList.add("h-full");
         }
 
+        document.getElementById('menu').addEventListener('click', () => {
+            closeCart();
+        });
+
+        document.getElementById('closecartbtn').addEventListener('click', () => {
+            closeCart();
+        });
+
         function closeCart() {
-            console.log("close cart");
+            console.log("closing cart");
+            document.getElementById("cart-expanded").classList.remove("h-full");
             document.getElementById("cart-expanded").classList.add("hidden");
+            document.querySelector(".cart-section").style.height = "auto";
+            document.getElementById('menu').style.filter = 'none';
         }
 
     </script>
