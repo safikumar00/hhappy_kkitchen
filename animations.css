@@ -1,0 +1,26 @@
+.cart-error {
+  animation: carterror 0.8s ease;
+}
+
+@keyframes carterror {
+  0%,
+  100% {
+    background-color: #1f2937;
+  }
+  50% {
+    background-color: #ff3030;
+  }
+}
+
+.cart-success {
+  animation: cartsuccess 0.8s ease;
+}
+@keyframes cartsuccess {
+  0%,
+  100% {
+    background-color: #1f2937;
+  }
+  50% {
+    background-color: #0cc042;
+  }
+}

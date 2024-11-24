@@ -6,10 +6,27 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Restaurant Menu</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+
+    <link rel="stylesheet" href="./animations.css">
     <style>
         .cart-section {
             transition: height 1s ease-in-out, filter 0.3s ease-in-out;
             overflow: hidden;
+        }
+
+        .menu-item:last-child {
+            border: none !important;
+        }
+
+        .filter {
+            overflow-y: scroll;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+
+        body {
+            scroll-behavior: smooth;
         }
     </style>
 </head>
@@ -20,15 +37,100 @@
         <!-- Header Section -->
         <header class="py-4 text-white bg-blue-500">
             <div class="container mx-auto text-center">
-                <h1 class="text-3xl font-bold">Welcome to [Your Restaurant Name]</h1>
-                <p class="text-lg">Delicious food, fast delivery, and student-friendly prices!</p>
+                <h1 class="text-3xl font-bold mb-4 text-balance">Welcome to Hhappy Kitchen</h1>
+                <p class="text-lg text-balance">Delicious food, fast delivery, and student-friendly prices!</p>
             </div>
         </header>
 
         <!-- Menu Section -->
-        <section class="container px-4 pb-4 mx-auto mt-8">
-            <h2 class="mb-6 text-2xl font-semibold text-center">Our Menu</h2>
-            <div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 menu-container">
+        <section class="container px-4 pb-24 mx-auto mt-4">
+            <!-- <h2 class="text-2xl font-semibold text-center">Our Menu</h2> -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 menu-container gap-3">
+                <div class="filters p-2 rounded-md bg-white flex flex-col gap-2">
+                    <div class="relative rounded-md flex bg-gray-100 p-2 border text-xl">
+                        <i class="bi bi-search "></i> &nbsp;<input type="text" id="searchInput"
+                            class="w-full bg-transparent text-xxl focus:border-transparent focus:border-0 hover:border-0 focus-visible:width-0 focus:outline-none"
+                            placeholder="Search Menu" />
+                    </div>
+                    <div class="flex gap-2 overflow-x-scroll filter">
+                        <button
+                            class="filter-button px-4 border text-nowrap py-1 rounded-full focus:text-white focus:bg-blue-500"
+                            data-filter="all">All</button>
+                        <button
+                            class="filter-button px-4 border text-nowrap py-1 rounded-full focus:text-white focus:bg-blue-500"
+                            href="#veg">Veg</button>
+                        <button
+                            class="filter-button px-4 border text-nowrap py-1 rounded-full focus:text-white focus:bg-blue-500"
+                            href="#non-veg">Non-Veg</button>
+                        <button
+                            class="filter-button px-4 border text-nowrap py-1 rounded-full focus:text-white focus:bg-blue-500"
+                            href="#biryani">Biryani's</button>
+                        <button
+                            class="filter-button px-4 border text-nowrap py-1 rounded-full focus:text-white focus:bg-blue-500"
+                            href="#fried-rice">Fried Rice</button>
+                        <button
+                            class="filter-button px-4 border text-nowrap py-1 rounded-full focus:text-white focus:bg-blue-500"
+                            href="#starters">Starters</button>
+                        <button
+                            class="filter-button px-4 border text-nowrap py-1 rounded-full focus:text-white focus:bg-blue-500"
+                            href="#meals">Meals</button>
+                    </div>
+                </div>
+                <div class="rounded-lg overflow-hidden bg-white">
+                    <div class="accordion p-3 " onclick="toggleAccordion('specials')">
+                        <button class="text-xl font-bold">Hhappy Kkitchen
+                            Specials</button>
+                    </div>
+                    <div class="rounded-lg p-2 flex flex-col justify-center w-full items-center gap-2 menu-item shadow"
+                        id="specials">
+                    </div>
+                </div>
+
+                <div class="rounded-lg overflow-hidden bg-white">
+                    <div class="accordion p-3 " onclick="toggleAccordion('biryani')">
+                        <button class="text-xl font-bold">Biryani</button>
+                    </div>
+                    <div class="rounded-lg p-2 flex flex-col justify-center w-full items-center gap-2 menu-item shadow"
+                        id="biryani">
+                    </div>
+                </div>
+
+                <div class="rounded-lg overflow-hidden bg-white">
+                    <div class="accordion p-3 " onclick="toggleAccordion('starters')">
+                        <button class="text-xl font-bold">Starters</button>
+                    </div>
+                    <div class="rounded-lg p-2 flex-col hidden justify-center w-full items-center gap-2 menu-item shadow"
+                        id="starters">
+
+                    </div>
+                </div>
+
+                <div class="rounded-lg overflow-hidden bg-white">
+                    <div class="accordion p-3 " onclick="toggleAccordion('curries')">
+                        <button class="text-xl font-bold capitalize">curries</button>
+                    </div>
+                    <div class="rounded-lg p-2 hidden flex-col justify-center w-full items-center gap-2 menu-item shadow"
+                        id="curries">
+                    </div>
+                </div>
+
+                <div class="rounded-lg overflow-hidden bg-white">
+                    <div class="accordion p-3 " onclick="toggleAccordion('fired-rice')">
+                        <button class="text-xl font-bold capitalize">fired-rice</button>
+                    </div>
+                    <div class="rounded-lg flex-col p-2 hidden justify-center w-full items-center gap-2 menu-item shadow"
+                        id="fired-rice">
+                    </div>
+                </div>
+
+                <div class="rounded-lg overflow-hidden bg-white">
+                    <div class="accordion p-3 " onclick="toggleAccordion('meals')">
+                        <button class="text-xl font-bold capitalize">meals</button>
+                    </div>
+                    <div class="rounded-lg p-2 flex-col hidden justify-center w-full items-center gap-2 menu-item shadow"
+                        id="meals">
+                    </div>
+                </div>
                 <!-- Menu Item (Repeat for Each Item Dynamically) -->
 
                 <!-- Repeat ends here -->
@@ -38,7 +140,7 @@
 
     <!-- Cart Section -->
     <section
-        class="sticky bottom-0 left-0 right-0 flex flex-col-reverse items-center p-4 text-white bg-gray-800 rounded-t-lg shadow-lg cart-section"
+        class="fixed bottom-0 left-0 right-0 flex flex-col-reverse items-center p-4 text-white bg-gray-800 rounded-t-lg shadow-lg cart-section"
         onclick="openCart()">
         <div class="flex items-center justify-between w-full ">
             <div>
@@ -51,7 +153,8 @@
                     <span id="total-cost">Rs. 0</span>
                 </div>
             </div>
-            <button class="px-4 py-2 transition bg-green-500 rounded hover:bg-green-600" onclick="checkout()">
+            <button class="px-4 py-2 transition bg-green-500 rounded hover:bg-green-600 checkout-btn"
+                onclick="checkout()">
                 Checkout
             </button>
         </div>
@@ -59,7 +162,7 @@
         <div id="cart-expanded" class="hidden w-full overflow-y-auto bg-gray-800 h-full">
             <div class="flex justify-between items-center">
                 <p class="text-lg">Cart</p>
-                <button class="px-4 py-2 transition bg-gray-600 rounded" id="closecartbtn" type="button">Close</button>
+                <!-- <button class="px-4 py-2 transition bg-gray-600 rounded" id="closecartbtn" type="button">Close</button> -->
             </div>
             <ul id="cart-items" class="mt-4 ">
                 <!-- list items comes here -->
@@ -68,348 +171,9 @@
         <!--Write the expanded cart functionality here-->
     </section>
 
-    <script>
-        let cartCount = 0;
-        let totalCost = 0;
-        let cartItems = [];
+    <script src="./fooditems.js" ></script>
+    <script src="./script.js"></script>
 
-        const foodItems = [
-            {
-                id: 100,
-                name: "Dish Name",
-                description: "A short description of the dish to entice students.",
-                price: "₹100",
-                image: "https://via.placeholder.com/300x200",
-                cartImage: "https://via.placeholder.com/75x75"
-
-            },
-            {
-                id: 200,
-                name: "Potated Rice",
-                description: "A short description of the dish to entice students.",
-                price: "₹200",
-                image: "https://via.placeholder.com/300x200",
-                cartImage: "https://via.placeholder.com/75x75"
-            },
-            {
-                id: 300,
-                name: "Egg Rice",
-                description: "A short description of the dish to entice students.",
-                price: "₹300",
-                image: "https://via.placeholder.com/300x200",
-                cartImage: "https://via.placeholder.com/75x75"
-            },
-            {
-                id: 400,
-                name: "Egg Rice",
-                description: "A short description of the dish to entice students.",
-                price: "₹300",
-                image: "https://via.placeholder.com/300x200",
-                cartImage: "https://via.placeholder.com/75x75"
-            },
-            {
-                id: 500,
-                name: "Egg Rice",
-                description: "A short description of the dish to entice students.",
-                price: "₹300",
-                image: "https://via.placeholder.com/300x200",
-                cartImage: "https://via.placeholder.com/75x75"
-            }
-
-        ];
-
-        const menuContainer = document.querySelector(".menu-container");
-
-        foodItems.forEach(item => {
-            const menuItem = document.createElement("div");
-            menuItem.classList.add("bg-white", "rounded-lg", "shadow-md", "overflow-hidden");
-
-            const image = document.createElement("img");
-            image.src = item.image;
-            image.alt = item.name;
-            image.classList.add("w-full", "h-48", "object-cover");
-
-            const content = document.createElement("div");
-            content.classList.add("p-4");
-
-            const name = document.createElement("h3");
-            name.textContent = item.name;
-            name.classList.add("text-lg", "font-semibold");
-
-            const description = document.createElement("p");
-            description.textContent = item.description;
-            description.classList.add("text-gray-600", "text-sm", "mt-2");
-
-            const priceContainer = document.createElement("div");
-            priceContainer.classList.add("mt-4", "flex", "justify-between", "items-center");
-            priceContainer.setAttribute("data-item-id", item.id);
-
-            const price = document.createElement("span");
-            price.textContent = item.price;
-            price.classList.add("text-blue-500", "font-bold", "text-2xl");
-
-            const addButton = document.createElement("button");
-            addButton.classList.add("add-to-cart", "bg-blue-500", "text-white", "px-4", "py-2", "rounded", "hover:bg-blue-600", "transition", 'add-to-cart');
-            addButton.textContent = "Add to Cart";
-
-            const quantityContainer = document.createElement("div");
-            quantityContainer.classList.add("flex", "items-center", "hidden");
-
-            const decrementButton = document.createElement("button");
-            decrementButton.classList.add("bg-blue-500", "text-white", "px-2", "py-1", "rounded", "hover:bg-blue-600", "transition", "remove-from-cart");
-            decrementButton.textContent = "-";
-
-            const quantitySpan = document.createElement("span");
-            quantitySpan.textContent = "0";
-            quantitySpan.classList.add("mx-2");
-
-            const incrementButton = document.createElement("button");
-            incrementButton.classList.add("bg-blue-500", "text-white", "px-2", "py-1", "rounded", "hover:bg-blue-600", "transition", "increment-quantity");
-            incrementButton.textContent = "+";
-
-            priceContainer.appendChild(price);
-            priceContainer.appendChild(addButton);
-            priceContainer.appendChild(quantityContainer);
-            quantityContainer.appendChild(decrementButton);
-            quantityContainer.appendChild(quantitySpan);
-            quantityContainer.appendChild(incrementButton);
-
-            content.appendChild(name);
-            content.appendChild(description);
-            content.appendChild(priceContainer);
-
-            menuItem.appendChild(image);
-            menuItem.appendChild(content);
-
-            menuContainer.appendChild(menuItem);
-        });
-
-        const addToCartButtons = document.querySelectorAll(".add-to-cart");
-
-        addToCartButtons.forEach(button => {
-            button.addEventListener("click", () => {
-
-                const parentElement = button.parentElement;
-
-                const itemId = parentElement.getAttribute("data-item-id");
-
-                const hiddenDiv = button.nextElementSibling;
-
-                hiddenDiv.classList.remove("hidden");
-
-                button.classList.add("hidden");
-
-                const countSpan = hiddenDiv.querySelector("span");
-
-                const count = parseInt(countSpan.textContent) + 1;
-                countSpan.textContent = count;
-
-                addToCart(itemId);
-
-                if (count <= 0) {
-                    hiddenDiv.classList.add("hidden");
-                    button.classList.remove("hidden");
-                }
-            });
-        });
-
-        const removeFromCartButtons = document.querySelectorAll(".remove-from-cart");
-
-        removeFromCartButtons.forEach(button => {
-            button.addEventListener("click", () => {
-
-                const parentElement = button.parentElement.parentElement;
-                const countparentElement = button.parentElement;
-
-                const itemId = parentElement.getAttribute("data-item-id");
-
-                const countSpan = countparentElement.querySelector("span");
-
-                const count = parseInt(countSpan.textContent) - 1;
-                countSpan.textContent = count;
-
-                removefromcart(itemId);
-
-                if (count <= 0) {
-                    button.parentElement.classList.add("hidden");
-                    button.parentElement.previousElementSibling.classList.remove("hidden");
-                }
-            });
-        });
-
-        const incrementQuantityButtons = document.querySelectorAll(".increment-quantity");
-
-        incrementQuantityButtons.forEach(button => {
-            button.addEventListener("click", () => {
-
-                const parentElement = button.parentElement.parentElement;
-                const countparentElement = button.parentElement;
-
-                const itemId = parentElement.getAttribute("data-item-id");
-
-                const countSpan = countparentElement.querySelector("span");
-
-                const count = parseInt(countSpan.textContent) + 1;
-                countSpan.textContent = count;
-
-                addToCart(itemId);
-            });
-        });
-
-        function addToCart(itemId) {
-            totalCost += parseInt(itemId);
-            cartCount++;
-            document.getElementById("cart-count").textContent = `${cartCount} Item${cartCount > 1 ? 's' : ''}`;
-            document.getElementById("total-cost").textContent = `Rs. ${totalCost}`;
-
-            let item = cartItems.find(cartItem => cartItem.id === itemId);
-            if (item) {
-                item.quantity += 1;
-            } else {
-                cartItems.push({ id: itemId, quantity: 1 });
-            }
-            updateCart(itemId);
-            // cartItems.forEach(item => console.log(item));
-        }
-
-
-
-        function removefromcart(itemId) {
-            totalCost -= parseInt(itemId);
-            cartCount--;
-            document.getElementById("cart-count").textContent = `${cartCount} Item${cartCount > 1 ? 's' : ''}`;
-            document.getElementById("total-cost").textContent = `Rs. ${totalCost}`;
-
-            let item = cartItems.find(cartItem => cartItem.id === itemId);
-            item.quantity -= 1;
-            if (item.quantity <= 0) {
-                cartItems = cartItems.filter(cartItem => cartItem.id !== itemId);
-            }
-            updateCart(itemId);
-            // cartItems.forEach(item => console.log(item));
-        }
-
-
-
-        function updateCart() {
-            const cartContainer = document.getElementById("cart-items");
-
-            if (!cartContainer) {
-                console.error("Cart container with id 'cart-items' not found.");
-                return;
-            }
-
-            let cartHtml = '';
-            let totalCost = 0;
-            let cartCount = 0;
-
-            cartItems.forEach(item => {
-                // Convert `item.id` to a number for comparison
-                let food = foodItems.find(food => food.id === Number(item.id));
-
-                if (!food) {
-                    console.warn(`Food item with id ${item.id} not found in foodItems.`);
-                    return; // Skip this cart item
-                }
-
-                // Calculate the total cost for this item
-                const itemCost = parseFloat(food.price.replace('₹', '')) * item.quantity;
-                totalCost += itemCost;
-                cartCount += item.quantity;
-
-                // Append to cartHtml
-                cartHtml += `
-      <li class="flex justify-between py-4 border-b border-gray-600 card-item" data-item-id="${food.id}">
-        <img src="${food.cartImage || food.image}" alt="${food.name}" class="object-cover w-16 h-16">
-        <div class="w-full ml-4">
-          <h4 class="text-lg font-semibold">${food.name}</h4>
-          <span class="text-lg font-bold text-gray-400">${food.price}</span>
-        </div>
-        <div class="flex flex-col items-end justify-between">
-          <span class="text-2xl font-bold text-blue-500">${itemCost}</span>
-          <div class="flex items-center">
-            <button class="px-2 py-1 text-white transition bg-blue-500 rounded hover:bg-blue-600 remove-from-cart">-</button>
-            <span class="mx-2">${item.quantity}</span>
-            <button class="px-2 py-1 text-white transition bg-blue-500 rounded hover:bg-blue-600 increment-quantity">+</button>
-          </div>
-        </div>
-      </li>
-    `;
-            });
-
-            // Update cart container HTML
-            cartContainer.innerHTML = cartHtml;
-
-            // Update total cost and cart count
-            document.getElementById("cart-count").textContent = `${cartCount} Item${cartCount > 1 ? 's' : ''}`;
-            document.getElementById("total-cost").textContent = `Rs. ${totalCost}`;
-
-            // Debugging log
-            console.log("Cart updated successfully:", cartHtml);
-        }
-
-        // Get the cart container element
-        const cartContainer = document.getElementById("cart-items");
-
-        // Add an event listener to the cart container
-        cartContainer.addEventListener("click", (event) => {
-            // Check if the clicked element is a remove-from-cart button
-            if (event.target.classList.contains("remove-from-cart")) {
-                // Get the item ID from the button's parent element
-                const itemId = event.target.closest(".card-item").getAttribute("data-item-id"); removefromcart(itemId);
-            }
-
-            // Check if the clicked element is an increment-quantity button
-            if (event.target.classList.contains("increment-quantity")) {
-                // Get the item ID from the button's parent element
-                const itemId = event.target.closest(".card-item").getAttribute("data-item-id"); console.log(itemId);
-                // Increment the quantity
-                const item = cartItems.find((item) => item.id === itemId);
-                item.quantity++;
-                updateCart();
-            }
-
-            // Check if the clicked element is a decrement-quantity button
-            if (event.target.classList.contains("decrement-quantity")) {
-                // Get the item ID from the button's parent element
-                const itemId = event.target.closest(".card-item").getAttribute("data-item-id");                // Decrement the quantity
-                const item = cartItems.find((item) => item.id === itemId);
-                item.quantity--;
-                if (item.quantity <= 0) {
-                    cartItems = cartItems.filter((item) => item.id !== itemId);
-                }
-                updateCart();
-            }
-        });
-
-
-        function checkout() {
-            alert("Proceeding to checkout...");
-        }
-        function openCart() {
-            document.getElementById("cart-expanded").classList.remove("hidden");
-            document.querySelector(".cart-section").style.height = "80vh";
-            document.getElementById('menu').style.filter = 'blur(10px)';
-            document.getElementById("cart-expanded").classList.add("h-full");
-        }
-
-        document.getElementById('menu').addEventListener('click', () => {
-            closeCart();
-        });
-
-        document.getElementById('closecartbtn').addEventListener('click', () => {
-            closeCart();
-        });
-
-        function closeCart() {
-            console.log("closing cart");
-            document.getElementById("cart-expanded").classList.remove("h-full");
-            document.getElementById("cart-expanded").classList.add("hidden");
-            document.querySelector(".cart-section").style.height = "auto";
-            document.getElementById('menu').style.filter = 'none';
-        }
-
-    </script>
 </body>
 
 </html>

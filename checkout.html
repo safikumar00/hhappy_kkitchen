@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout Page</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <style>
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeOut {
+            from {
+                opacity: 1;
+            }
+
+            to {
+                opacity: 0;
+            }
+        }
+
+        .hidden {
+            animation: fadeOut 0.5s ease-in-out;
+        }
+
+        .block {
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+
+        .billing-details::after {
+            content: "Your order is eleigible for free delivery";
+            display: inline-block;
+            width: 100%;
+            font-size: 14px;
+            color: rgb(0, 208, 76);
+            text-align: center;
+            background-color: ;
+            /* position: absolute; */
+            bottom: 0;
+            left: 0;
+            /* width: 100%; */
+            height: 1px;
+            background-color: #fbfbfb;
+            height: fit-content;
+            padding: 4px 0px;
+        }
+    </style>
+</head>
+
+<body class="bg-gray-100">
+    <div class="text-center relative bg-white p-2 pt-4">
+        <button
+            class="absolute top-3 left-1 rounded-md text-gray-500 hover:text-gray-700 flex items-center gap-1 p-2"><img
+                src="./assets/caret-left-fill.svg" alt="" id="back"> Back</button>
+        <h1 class="text-2xl font-bold text-center">Checkout</h1>
+    </div>
+    <div class="container mx-auto p-6 pb-30">
+        <div class="space-y-4">
+            <!-- Order Items Accordion -->
+            <div class="bg-white shadow-md rounded-lg accordion">
+                <div class="border-b border-gray-200">
+                    <button
+                        class="w-full text-left px-4 py-2 text-lg font-semibold flex flex-col justify-between text-gray-700 focus:outline-none"
+                        onclick="toggleAccordion('orderItemsAccordion')">
+                        <p>Order Summary</p>
+                    </button>
+                </div>
+                <div id="orderItemsAccordion" class=" accordion block p-4">
+                    <ul class="space-y-2 added-items">
+
+                    </ul>
+                </div>
+            </div>
+
+            <div class="bg-white shadow-md rounded-lg accordion relative billing-details overflow-hidden">
+                <div class="border-b border-gray-200">
+                    <button
+                        class="w-full text-left px-4 py-2 text-lg font-semibold flex flex-col justify-between text-gray-700 focus:outline-none"
+                        onclick="toggleAccordion('billing-details')">
+                        <p>Billing Details</p>
+                    </button>
+                </div>
+                <div id="billing-details" class=" accordion hidden w-full  p-4">
+                    <div class="flex justify-between w-full">
+                        <p>Item Total</p>
+                        <p class="order-total">500.00</p>
+                    </div>
+                    <div class="flex justify-between w-full">
+                        <p>Delviery Charges</p>
+                        <p class="text-green-500">Free</p>
+                    </div>
+                    <div class="flex justify-between w-full">
+                        <p>Platform fee</p>
+                        <p class="text-green-500">Free</p>
+                    </div>
+                </div>
+                <div class="flex justify-between flex-col text-lg font-semibold px-4 py-2 border-t">
+                    <div class="flex justify-between w-full">
+                        <p>Total</p>
+                        <p class="total-amount">150.00</p>
+                    </div>
+                    <!-- <div class="text-green-500 text-sm">Your order is eligible for FREE Delivery</div> -->
+                </div>
+            </div>
+
+
+            <!-- Checkout Form Accordion -->
+            <div class="bg-white shadow-md rounded-lg ">
+                <div class="border-b border-gray-200">
+                    <button class="w-full text-left px-4 py-2 text-lg font-semibold text-gray-700 focus:outline-none"
+                        onclick="toggleAccordion('checkoutFormAccordion')">
+                        Enter Delivery Deatils
+                    </button>
+                </div>
+                <div id="checkoutFormAccordion" class="p-4 accordion block">
+                    <form id="checkoutForm" class="space-y-4">
+                        <div class="space-y-2">
+                            <div>
+                                <label for="name" class="block font-medium text-gray-700">Name<span
+                                        class="text-red-500">*</span></label>
+                                <input type="text" id="name" name="name"
+                                    class="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500"
+                                    placeholder="Enter your name" required>
+                                <small class="text-red-500 text-base hidden">Please Enter your name</small>
+                            </div>
+                            <div>
+                                <label for="phone" class="block font-medium text-gray-700">Phone<span
+                                        class="text-red-500">*</span></label>
+                                <input type="number" id="phone" name="phone"
+                                    class="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500"
+                                    placeholder="Enter your phone number" required>
+                                <small class="text-red-500 text-base hidden">Please Enter your phone number</small>
+
+                            </div>
+                        </div>
+                        <div class="space-y-2">
+                            <div>
+                                <label for="address" class="block font-medium text-gray-700">Location<span
+                                        class="text-red-500">*</span></label>
+                                <input type="text" id="address" name="address"
+                                    class="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500"
+                                    placeholder="Enter your location" required>
+                                <small class="text-red-500 text-base hidden">Please Enter your location</small>
+
+                            </div>
+                        </div>
+
+                        <div class="space-y-2">
+                            <div>
+                                <label for="Additional Info" class="block font-medium text-gray-700">Additional
+                                    Info</label>
+                                <textarea type="text" placeholder="Enter if you have any special requests..."
+                                    class=" w-full capitalize border border-gray-300 rounded-md p-2"></textarea>
+                            </div>
+                        </div>
+
+
+
+
+                        <!-- <h2 class="text-xl font-semibold">Apply Coupon</h2>
+                        <div class="flex items-center space-x-2">
+                            <input type="text" id="coupon" name="coupon"
+                                class="flex-grow p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500"
+                                placeholder="Enter coupon code">
+                            <button type="button" id="applyCoupon"
+                                class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600">Apply</button>
+                        </div> -->
+
+                        <h2 class="text-xl font-semibold">Payment Method</h2>
+                        <div class=" m-0">
+                            <div>
+                                <label class="flex items-center space-x-2">
+                                    <input type="radio" name="payment" value="cod"
+                                        class="text-blue-500 focus:ring-2 focus:ring-blue-500" checked required>
+                                    <span>Cash on Delivery</span>
+                                </label>
+                            </div>
+                            <!-- <div>
+                                <label class="flex items-center space-x-2">
+                                    <input type="radio" name="payment" value="gateway"
+                                        class="text-blue-500 focus:ring-2 focus:ring-blue-500">
+                                    <span>Online Payment (Integration Required)</span>
+                                </label>
+                            </div> -->
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+
+
+            <div class="bg-yellow-50 shadow-md rounded-lg p-4">
+                <p class="text-xl font-semibold"><i class="bi bi-info-circle"></i>&nbsp; Note*</p>
+                <div class="mt-2">
+                    <p class="text-balance">online delivery is limited to surrounding places of Bodametlapalem</p>
+                    <p class="text-balance font-semibold">For more details: <span class="font-semibold">+91
+                            8896321452</span></p>
+                </div>
+                <button
+                    class="mt-2 bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600 w-full flex items-center gap-2 justify-center"><img
+                        src="./assets/telephone-forward-fill.svg" alt="">
+                    <p>Call Restaurant</p>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Dialog Box -->
+    <div id="confirmOrderModal"
+        class="modal hidden fixed top-0 left-0 w-full h-full bg-gray-500 bg-opacity-75 flex items-center justify-center">
+        <div class="modal-dialog bg-white rounded-lg shadow-md p-4 ">
+            <div class="modal-content">
+                <div class="modal-header flex justify-between items-end border-b border-gray-200 pb-3">
+                    <h2 class="text-lg font-semibold uppercase">Confirm Order Details</h2>
+                    <button class="close-modal text-xl py-1 px-3 font-semibold rounded-md border"
+                        onclick="document.getElementById('confirmOrderModal').classList.add('hidden')">X</button>
+                </div>
+                <div class="modal-body">
+                    <p>Please review your order details below:</p>
+                    <ul class="text-lg">
+                        <li class="font-semibold flex"><span class="w-1/2">Name:</span> <span
+                                class="w-1/2 text-balance capitalize" id="confirm-name"></span></li>
+                        <li class="font-semibold flex"><span class="w-1/2">Phone:</span> <span
+                                class="w-1/2 text-balance capitalize" id="confirm-phone"></span></li>
+                        <li class="font-semibold flex"><span class="w-1/2">Address:</span> <span
+                                class="w-1/2 text-balance capitalize" id="confirm-address"></span></li>
+                        <li class="font-semibold flex"><span class="w-1/2">Order Total:</span> <span
+                                class="w-1/2 text-balance capitalize" id="confirm-total"></span></li>
+                    </ul>
+                </div>
+                <div class="modal-footer">
+                    <button class="bg-green-500 text-white w-full py-2 my-3 rounded-md hover:bg-green-600"
+                        onclick="placeOrder()">Confirm Order</button>
+                    <button
+                        class="bg-white text-green-500 w-full py-2 rounded-md hover:bg-green-400 hover:text-white border border-green-500"
+                        onclick="document.getElementById('confirmOrderModal').classList.add('hidden')">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="sticky bottom-0 w-full p-4 shadow backdrop-blur-md">
+        <button type="button"
+            class="w-full bg-green-500 text-white py-2 text-2xl font-bold rounded-md hover:bg-green-600"
+            id="placeorder">Place
+            Order</button>
+    </div>
+
+    <script src="fooditems.js"></script>
+    <script>
+
+        const form = document.getElementById('checkoutForm');
+        const nameInput = document.getElementById('name');
+        const phoneInput = document.getElementById('phone');
+        const addressInput = document.getElementById('address');
+
+        // Add event listeners to each input field
+        nameInput.addEventListener('change', validateName);
+        phoneInput.addEventListener('change', validatePhone);
+        addressInput.addEventListener('change', validateAddress);
+
+        var flag = false;
+
+        // Validation functions
+        function validateName() {
+            const nameValue = nameInput.value.trim();
+            if (nameValue === '') {
+                nameInput.classList.add('border-red-500');
+                nameInput.nextElementSibling.classList.remove('hidden');
+                flag = false;
+            } else {
+                nameInput.classList.remove('border-red-500');
+                nameInput.nextElementSibling.classList.add('hidden');
+                flag = true;
+            }
+        }
+
+        document.getElementById('placeorder').addEventListener('click', function (e) {
+            e.preventDefault();
+            if (flag) {
+                document.getElementById('confirmOrderModal').classList.remove('hidden');
+                document.getElementById('confirm-name').innerHTML = nameInput.value;
+                document.getElementById('confirm-phone').innerHTML = phoneInput.value;
+                document.getElementById('confirm-address').innerHTML = addressInput.value;
+                document.getElementById('confirm-total').innerHTML = ordertotal;
+            } else {
+                alert('Please fill all the details');
+            }
+        });
+
+        function placeOrder() {
+            // Place the order here
+            document.getElementById('confirmOrderModal').classList.add('hidden');
+        }
+
+        function validatePhone() {
+            const phoneValue = phoneInput.value.trim();
+            if (phoneValue === '') {
+                phoneInput.classList.add('border-red-500');
+                phoneInput.nextElementSibling.classList.remove('hidden');
+                flag = false;
+            } else if (!/^\d{10}$/.test(phoneValue)) {
+                phoneInput.classList.add('border-red-500');
+                phoneInput.nextElementSibling.textContent = 'Please enter a valid phone number';
+                phoneInput.nextElementSibling.classList.remove('hidden');
+                flag = false;
+            } else {
+                phoneInput.classList.remove('border-red-500');
+                phoneInput.nextElementSibling.classList.add('hidden');
+                flag = true;
+            }
+        }
+
+        function validateAddress() {
+            const addressValue = addressInput.value.trim();
+            if (addressValue === '') {
+                addressInput.classList.add('border-red-500');
+                addressInput.nextElementSibling.classList.remove('hidden');
+                flag = false;
+            } else {
+                addressInput.classList.remove('border-red-500');
+                addressInput.nextElementSibling.classList.add('hidden');
+                flag = true;
+            }
+        }
+
+
+        function toggleAccordion(id) {
+            // const accordions = document.querySelectorAll('.accordion');
+            // accordions.forEach(accordion => {
+            //     if (accordion.classList.contains('block')) {
+            //         accordion.classList.replace('block', 'hidden');
+            //     }
+            // });
+            const element = document.getElementById(id);
+            if (element.classList.contains('block')) {
+                element.classList.replace('block', 'hidden');
+            } else {
+                element.classList.replace('hidden', 'block');
+
+            }
+        }
+
+        const cartItems = [{ id: 1000, quantity: 2 }, { id: 2000, quantity: 2 }];
+
+        let html = [];
+        let ordertotal = 0;
+
+        cartItems.forEach(items => {
+            foodItems.forEach(item => {
+                if (item.id == items.id) {
+                    ordertotal += items.quantity * item.price;
+                    html.push(`
+                    <li class="flex justify-between items-center">
+                            <div class="flex gap-1 items-center">
+                                <img src="${item.typeof}" width="16px" alt="">
+                                <span>${item.name}</span>
+                                <span> x ${items.quantity}</span>
+                            </div>
+                            <div>
+                                <span>${items.quantity * item.price}.00</span>
+                            </div>
+                        </li>
+                    `);
+                }
+            })
+        })
+
+        let deliveryCharges = 0;
+
+        // console.log(html);
+
+        document.querySelector('.added-items').innerHTML = html.join('');
+
+        document.querySelector('.order-total').innerHTML = ordertotal;
+
+        document.querySelector('.total-amount').innerHTML = ordertotal + deliveryCharges;
+
+        // console.log(foodItems);
+
+        document.getElementById('back').addEventListener('click', () => {
+            window.location.href = 'index.html';
+        });
+    </script>
+
+</body>
+
+</html>
