@@ -91,18 +91,20 @@
                         <p>Billing Details</p>
                     </button>
                 </div>
-                <div id="billing-details" class=" accordion hidden w-full  p-4">
+                <div id="billing-details" class=" accordion w-full  p-4">
                     <div class="flex justify-between w-full">
                         <p>Item Total</p>
                         <p class="order-total">500.00</p>
                     </div>
                     <div class="flex justify-between w-full">
                         <p>Delviery Charges</p>
-                        <p class="text-green-500">Free</p>
+                        <p class="text-green-500">Free <span class=""
+                                style="text-decoration: line-through; color: red;">80.00</span> </p>
                     </div>
                     <div class="flex justify-between w-full">
                         <p>Platform fee</p>
-                        <p class="text-green-500">Free</p>
+                        <p class="text-green-500">Free <span class=""
+                                style="text-decoration: line-through; color: red;">40.00</span> </p>
                     </div>
                 </div>
                 <div class="flex justify-between flex-col text-lg font-semibold px-4 py-2 border-t">
@@ -257,7 +259,13 @@
     </div>
 
     <script src="fooditems.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
     <script>
+
+        const params = new URLSearchParams(window.location.search);
+        const cartItems = JSON.parse(params.get('cartItems'));
+
+        console.log(cartItems);
 
         const form = document.getElementById('checkoutForm');
         const nameInput = document.getElementById('name');
@@ -301,6 +309,43 @@
         function placeOrder() {
             // Place the order here
             document.getElementById('confirmOrderModal').classList.add('hidden');
+            alert('Order placed successfully!');
+            const formData = new FormData(form);
+            const items = JSON.parse(localStorage.getItem('cartItems')); // assuming you're storing the cart items in local storage
+
+            const doc = new window.jspdf.jsPDF();
+            // Set the font size and style
+            doc.setFontSize(16);
+            doc.setFont('helvetica', 'bold');
+
+            // Add the bill title
+            doc.text('Bill', 10, 10);
+
+            // Add the form data
+            doc.setFontSize(12);
+            doc.setFont('helvetica', 'normal');
+
+            doc.text(`Name: ${formData.get('name')}`, 10, 20);
+            doc.text(`Phone: ${formData.get('phone')}`, 10, 30);
+            doc.text(`Address: ${formData.get('address')}`, 10, 40);
+
+            // Add the items
+            const itemsY = 50;
+
+            doc.setFontSize(10);
+            doc.setFont('helvetica', 'bold');
+
+            doc.text('Items', 10, itemsY);
+
+            doc.setFontSize(10);
+            doc.setFont('helvetica', 'normal');
+
+            cartItems.forEach((item, index) => {
+                doc.text(`${index + 1}. ${item.name} x ${item.quantity}`, 10, itemsY + (index + 1) * 10);
+            });
+
+            // Save the PDF
+            doc.save('bill.pdf');
         }
 
         function validatePhone() {
@@ -351,7 +396,7 @@
             }
         }
 
-        const cartItems = [{ id: 1000, quantity: 2 }, { id: 2000, quantity: 2 }];
+        // const cartItems = [{ id: 1000, quantity: 2 }, { id: 2000, quantity: 2 }];
 
         let html = [];
         let ordertotal = 0;
@@ -382,13 +427,14 @@
 
         document.querySelector('.added-items').innerHTML = html.join('');
 
-        document.querySelector('.order-total').innerHTML = ordertotal;
+        document.querySelector('.order-total').innerHTML = ordertotal + ".00";
 
-        document.querySelector('.total-amount').innerHTML = ordertotal + deliveryCharges;
+        document.querySelector('.total-amount').innerHTML = ordertotal + deliveryCharges + ".00";
 
         // console.log(foodItems);
 
         document.getElementById('back').addEventListener('click', () => {
+
             window.location.href = 'index.html';
         });
     </script>

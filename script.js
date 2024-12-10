@@ -1,4 +1,3 @@
-
 let cartCount = 0;
 let totalCost = 0;
 let cartItems = [];
@@ -307,9 +306,12 @@ function checkout() {
     return;
   } else {
     alert("Proceeding to checkout...");
-    window.location.href = "checkout.html";
+    const params = new URLSearchParams();
+    params.append("cartItems", JSON.stringify(cartItems));
+    window.location.href = `checkout.html?${params.toString()}`;
   }
 }
+
 function openCart() {
   if (cartItems.length !== 0) {
     document.getElementById("cart-expanded").classList.remove("hidden");
